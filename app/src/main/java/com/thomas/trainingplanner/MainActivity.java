@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        initializeButtons();
+
+
+
+    }
+
+    private void initializeButtons(){
         // Find buttons by ID
         Button button1 = findViewById(R.id.calendarButton1);
         Button button2 = findViewById(R.id.calendarButton2);
@@ -47,5 +55,19 @@ public class MainActivity extends AppCompatActivity {
         button5.setText(Calendar.calculateDay(today, +2));
         textView1.setText(Calendar.getCurrentMonth());
 
+        // Default on startput:
+
+        // Set button1 as active
+        button1.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+        button1.setEnabled(false);
+        // Set other buttons as inactive
+        button2.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+        button2.setEnabled(false);
+        button3.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
+        button3.setEnabled(true);
+        button4.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+        button4.setEnabled(false);
+        button5.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+        button5.setEnabled(false);
     }
 }
