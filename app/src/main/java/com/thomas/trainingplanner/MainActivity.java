@@ -1,19 +1,15 @@
 package com.thomas.trainingplanner;
 
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +45,10 @@ public class MainActivity extends AppCompatActivity {
         TextView textView1 = findViewById(R.id.textView2);
         initialize(buttonList, textView1);
 
-        // Add button behavior:
-        buttonBehaviour(buttonList);
 
     }
 
-    private void initialize(List<Button> buttonList, TextView textView1){
-
+    private void initialize(@NonNull List<Button> buttonList, TextView textView1){
         // Get day of month of today
         String today = Calendar.getToday();
         String month = Calendar.getCurrentMonth();
@@ -63,25 +56,32 @@ public class MainActivity extends AppCompatActivity {
         // Set the button texts and the textView text
         for (int i = 0; i < buttonList.size(); i++){
             int size = buttonList.size();
+            Button button = buttonList.get(i);
             if (i == (size / 2)){
-                Button button = buttonList.get(i);
                 button.setText(today);
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
-                button.setEnabled(true);
             } else {
-                Button button = buttonList.get(i);
                 button.setText(Calendar.calculateDay(today, i - size/2));
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
-                button.setEnabled(false);
             }
 
-        }
+            // Set OnClickListener for each button
+            button.setOnClickListener(v -> {
+                buttonBehaviour(buttonList, button);
+            });
 
+        }
         textView1.setText(Calendar.getCurrentMonth());
     }
 
-    private void buttonBehaviour(List<Button> buttonList){
-
-
+    private void buttonBehaviour(@NonNull List<Button> buttonList, Button clickedButton) {
+        for (Button button : buttonList) {
+            if (button == clickedButton) {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
+            } else {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+            }
+        }
     }
+
 }
