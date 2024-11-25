@@ -4,14 +4,18 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,48 +30,58 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        initializeButtons();
-
-
-
-    }
-
-    private void initializeButtons(){
+        // Initialize:
         // Find buttons by ID
         Button button1 = findViewById(R.id.calendarButton1);
         Button button2 = findViewById(R.id.calendarButton2);
         Button button3 = findViewById(R.id.calendarButton3);
         Button button4 = findViewById(R.id.calendarButton4);
         Button button5 = findViewById(R.id.calendarButton5);
+        // Add buttons to ArrayList:
+        List<Button> buttonList = new ArrayList<>();
+        buttonList.add(button1);
+        buttonList.add(button2);
+        buttonList.add(button3);
+        buttonList.add(button4);
+        buttonList.add(button5);
 
         // Find textView by ID
         TextView textView1 = findViewById(R.id.textView2);
+        initialize(buttonList, textView1);
+
+        // Add button behavior:
+        buttonBehaviour(buttonList);
+
+    }
+
+    private void initialize(List<Button> buttonList, TextView textView1){
 
         // Get day of month of today
         String today = Calendar.getToday();
         String month = Calendar.getCurrentMonth();
 
         // Set the button texts and the textView text
-        button1.setText(Calendar.calculateDay(today, -2));
-        button2.setText(Calendar.calculateDay(today, -1));
-        button3.setText(today);
-        button4.setText(Calendar.calculateDay(today, +1));
-        button5.setText(Calendar.calculateDay(today, +2));
+        for (int i = 0; i < buttonList.size(); i++){
+            int size = buttonList.size();
+            if (i == (size / 2)){
+                Button button = buttonList.get(i);
+                button.setText(today);
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
+                button.setEnabled(true);
+            } else {
+                Button button = buttonList.get(i);
+                button.setText(Calendar.calculateDay(today, i - size/2));
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
+                button.setEnabled(false);
+            }
+
+        }
+
         textView1.setText(Calendar.getCurrentMonth());
+    }
 
-        // Default on startput:
+    private void buttonBehaviour(List<Button> buttonList){
 
-        // Set button1 as active
-        button1.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
-        button1.setEnabled(false);
-        // Set other buttons as inactive
-        button2.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
-        button2.setEnabled(false);
-        button3.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
-        button3.setEnabled(true);
-        button4.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
-        button4.setEnabled(false);
-        button5.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
-        button5.setEnabled(false);
+
     }
 }
