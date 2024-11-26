@@ -1,5 +1,6 @@
 package com.thomas.trainingplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         TextView textView1 = findViewById(R.id.textView2);
         initialize(buttonList, textView1);
 
+        // Switch to second Activity with add-Button
+        addButtonFunctionality();
 
     }
 
@@ -82,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
             }
         }
+    }
+
+    private void addButtonFunctionality(){
+        Button addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AddButtonActivity.class);
+            startActivity(intent);
+        });
     }
 
 }
