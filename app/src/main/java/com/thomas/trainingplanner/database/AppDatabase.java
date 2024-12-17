@@ -3,6 +3,7 @@ package com.thomas.trainingplanner.database;
 import android.content.Context;
 
 import androidx.room.*;
+
 @Database(
         entities = {
                 Exercise.class,

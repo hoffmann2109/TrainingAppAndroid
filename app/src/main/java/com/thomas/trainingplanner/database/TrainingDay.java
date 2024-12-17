@@ -1,6 +1,7 @@
 package com.thomas.trainingplanner.database;
 
 import androidx.room.*;
+
 @Entity(tableName = "training_days",
         foreignKeys = @ForeignKey(
                 entity = Exercise.class,

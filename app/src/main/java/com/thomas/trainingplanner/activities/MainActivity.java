@@ -11,14 +11,22 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.thomas.trainingplanner.R;
+import com.thomas.trainingplanner.database.AppDatabase;
+import com.thomas.trainingplanner.database.Exercise;
+import com.thomas.trainingplanner.database.ExerciseCompleted;
+import com.thomas.trainingplanner.entities.ExerciseData;
+import com.thomas.trainingplanner.database.TrainingDay;
 import com.thomas.trainingplanner.entities.Calendar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private ExerciseAdapter exerciseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         // Switch to second Activity with add-Button
         addButtonFunctionality();
 
+        // Setup RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.exerciseRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        exerciseAdapter = new ExerciseAdapter(this);
+        recyclerView.setAdapter(exerciseAdapter);
+
+        // Load exercises for today
+        loadTodaysExercises();
     }
 
     private void initialize(@NonNull List<Button> buttonList, TextView textView1){
@@ -97,6 +113,42 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AddButtonActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void loadTodaysExercises() {
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            String today = Calendar.getDateAsString();
+
+            // Custom query to get today's exercises with all details
+            List<ExerciseData> exerciseDataList = new ArrayList<>();
+
+            List<TrainingDay> todaysTraining = db.trainingDayDao()
+                    .getTrainingDaysByDate(today);
+
+            for (TrainingDay trainingDay : todaysTraining) {
+                Exercise exercise = db.exerciseDao()
+                        .getExerciseById(trainingDay.getExerciseId());
+
+                List<ExerciseCompleted> completed = db.exerciseCompletedDao()
+                        .getCompletedExercises(exercise.getId());
+
+                for (ExerciseCompleted comp : completed) {
+                    exerciseDataList.add(new ExerciseData(
+                            exercise.getId(),
+                            exercise.getName(),
+                            comp.getWeight(),
+                            comp.getReps(),
+                            comp.getRpe()
+                    ));
+                }
+            }
+
+            // Update UI on main thread
+            runOnUiThread(() -> {
+                exerciseAdapter.setExercises(exerciseDataList);
+            });
+        }).start();
     }
 
 }
