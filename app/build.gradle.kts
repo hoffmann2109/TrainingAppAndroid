@@ -32,6 +32,14 @@ android {
 }
 
 dependencies {
+    // Room dependencies - Abstraction layer for SQLite
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

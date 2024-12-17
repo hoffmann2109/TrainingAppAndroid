@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <Button
         android:id="@+id/addButton"
@@ -56,7 +56,7 @@
                 android:backgroundTint="@color/elements"
                 android:text="1"
                 android:textColor="@color/background"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
 
             <Button
@@ -69,7 +69,7 @@
                 android:backgroundTint="@color/elements"
                 android:text="2"
                 android:textColor="@color/background"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
 
             <Button
@@ -82,7 +82,7 @@
                 android:backgroundTint="@color/activeElements"
                 android:text="3"
                 android:textColor="@color/background"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
 
             <Button
@@ -95,7 +95,7 @@
                 android:backgroundTint="@color/elements"
                 android:text="4"
                 android:textColor="@color/background"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
 
             <Button
@@ -108,7 +108,7 @@
                 android:backgroundTint="@color/elements"
                 android:text="5"
                 android:textColor="@color/background"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
 
         </LinearLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".AddButtonActivity">
+    tools:context=".activities.AddButtonActivity">
 
     <Button
         android:id="@+id/backButton"
@@ -50,6 +50,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/activeElements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -61,6 +62,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="date"
+        android:textColor="@color/activeElements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -71,6 +73,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:hint="ExerciseName"
+        android:textColorHint="@color/elements"
+        android:textColor="@color/activeElements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
@@ -92,6 +96,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/activeElements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -123,6 +128,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/activeElements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 

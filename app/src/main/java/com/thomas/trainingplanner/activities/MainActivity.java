@@ -1,4 +1,4 @@
-package com.thomas.trainingplanner;
+package com.thomas.trainingplanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.thomas.trainingplanner.R;
+import com.thomas.trainingplanner.entities.Calendar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize(@NonNull List<Button> buttonList, TextView textView1){
         // Get day of month of today
-        String today = Calendar.getToday();
+        String today = Calendar.getTodaysDay();
         String month = Calendar.getCurrentMonth();
 
         // Set the button texts and the textView text

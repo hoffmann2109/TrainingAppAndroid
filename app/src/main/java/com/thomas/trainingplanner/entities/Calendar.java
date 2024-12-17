@@ -1,11 +1,14 @@
-package com.thomas.trainingplanner;
+package com.thomas.trainingplanner.entities;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 public class Calendar {
     private static LocalDate today = LocalDate.now();
 
-    public static String getToday(){
+    public static String getTodaysDay(){
         if (today.getDayOfMonth()>9){
             return ""+ today.getDayOfMonth();
         } else {
@@ -17,7 +20,11 @@ public class Calendar {
         try {
             int todaysDay = Integer.parseInt(today);
             int newDay = todaysDay + number;
-            return "" + newDay;
+            if  (todaysDay > 9){
+                return "" + newDay;
+            } else {
+                return "0" + newDay;
+            }
         } catch (NumberFormatException e){
             return today;
         }
@@ -25,6 +32,12 @@ public class Calendar {
 
     public static String getCurrentMonth(){
         return today.getMonth().toString();
+    }
+
+    public static String getDateAsString(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String today = dateFormat.format(new Date());
+        return today;
     }
 
 }
