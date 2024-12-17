@@ -40,4 +40,20 @@ public class Calendar {
         return today;
     }
 
+    public static String getDateStringForDay(String buttonDate) {
+        try {
+            LocalDate currentDate = LocalDate.now();
+            int currentDay = currentDate.getDayOfMonth();
+            int selectedDay = Integer.parseInt(buttonDate);
+            int daysDifference = selectedDay - currentDay;
+
+            LocalDate selectedDate = currentDate.plusDays(daysDifference);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            return dateFormat.format(java.sql.Date.valueOf(selectedDate.toString()));
+        } catch (NumberFormatException e) {
+            return getDateAsString();
+        }
+    }
+
 }

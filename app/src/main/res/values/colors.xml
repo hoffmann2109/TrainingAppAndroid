@@ -5,4 +5,5 @@
     <color name="background">#e5e1da</color>
     <color name="elements">#B3C8CF</color>
     <color name="activeElements">#89a8b2</color>
+    <color name="darkFontColor">#181825</color>
 </resources>

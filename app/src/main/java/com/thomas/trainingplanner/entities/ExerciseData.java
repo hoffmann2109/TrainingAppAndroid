@@ -7,6 +7,7 @@ public class ExerciseData {
     private int reps;
     private float rpe;
 
+
     public ExerciseData(int id, String name, float weight, int reps, float rpe) {
         this.id = id;
         this.name = name;

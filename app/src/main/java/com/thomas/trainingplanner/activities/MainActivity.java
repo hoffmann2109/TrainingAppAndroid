@@ -27,6 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ExerciseAdapter exerciseAdapter;
+    private String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(button4);
         buttonList.add(button5);
 
+        selectedDate = Calendar.getDateAsString();
+
         // Find textView by ID
         TextView textView1 = findViewById(R.id.textView2);
         initialize(buttonList, textView1);
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(exerciseAdapter);
 
         // Load exercises for today
-        loadTodaysExercises();
+        loadExercisesForDate(selectedDate);
     }
 
     private void initialize(@NonNull List<Button> buttonList, TextView textView1){
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < buttonList.size(); i++){
             int size = buttonList.size();
             Button button = buttonList.get(i);
+            String buttonDate = Calendar.calculateDay(today, i - size/2);
             if (i == (size / 2)){
                 button.setText(today);
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.activeElements));
@@ -88,9 +92,13 @@ public class MainActivity extends AppCompatActivity {
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
             }
 
-            // Set OnClickListener for each button
+            // Set OnClickListener with date information
             button.setOnClickListener(v -> {
                 buttonBehaviour(buttonList, button);
+                // Calculate the full date string for the clicked button
+                String clickedDate = Calendar.getDateStringForDay(buttonDate);
+                selectedDate = clickedDate;
+                loadExercisesForDate(selectedDate);
             });
 
         }
@@ -105,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.elements));
             }
         }
+        loadExercisesForDate(selectedDate);
     }
 
     private void addButtonFunctionality(){
@@ -115,16 +124,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadTodaysExercises() {
+    private void loadExercisesForDate(String selectedDate) {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            String today = Calendar.getDateAsString();
-
             // Custom query to get today's exercises with all details
             List<ExerciseData> exerciseDataList = new ArrayList<>();
 
             List<TrainingDay> todaysTraining = db.trainingDayDao()
-                    .getTrainingDaysByDate(today);
+                    .getTrainingDaysByDate(selectedDate);
 
             for (TrainingDay trainingDay : todaysTraining) {
                 Exercise exercise = db.exerciseDao()

@@ -1,5 +1,6 @@
 package com.thomas.trainingplanner.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,6 +40,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return new ExerciseViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         ExerciseData exercise = exercises.get(position);

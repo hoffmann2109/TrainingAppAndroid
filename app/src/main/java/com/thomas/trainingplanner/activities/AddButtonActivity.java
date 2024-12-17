@@ -2,8 +2,10 @@ package com.thomas.trainingplanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,11 +16,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.thomas.trainingplanner.R;
+import com.thomas.trainingplanner.customElements.CustomToast;
 import com.thomas.trainingplanner.database.AppDatabase;
 import com.thomas.trainingplanner.database.Exercise;
 import com.thomas.trainingplanner.database.ExerciseCompleted;
 import com.thomas.trainingplanner.database.TrainingDay;
 import com.thomas.trainingplanner.entities.Calendar;
+import com.thomas.trainingplanner.entities.MuscleGroup;
+
+import java.util.Arrays;
 
 public class AddButtonActivity extends AppCompatActivity {
 
@@ -35,6 +41,7 @@ public class AddButtonActivity extends AppCompatActivity {
 
         // Initialize buttons:
         backButton();
+        dropdownButton();
         prefillDate();
         submitButton();
     }
@@ -45,6 +52,13 @@ public class AddButtonActivity extends AppCompatActivity {
             Intent intent = new Intent(AddButtonActivity.this, MainActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void dropdownButton(){
+        Spinner dropdown = findViewById(R.id.spinner1);
+        String[] items = Arrays.stream(MuscleGroup.values()).map(MuscleGroup::getName).toArray(String[]::new);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
     }
 
     private void prefillDate(){
@@ -68,6 +82,7 @@ public class AddButtonActivity extends AppCompatActivity {
         EditText reps = findViewById(R.id.editTextNumber2);
         EditText rpe = findViewById(R.id.editTextNumber3);
         EditText date = findViewById(R.id.editTextDate);
+        Spinner dropdown = findViewById(R.id.spinner1);
 
         // Get the values from the input fields
         String exerciseNameStr = exerciseName.getText().toString();
@@ -75,25 +90,24 @@ public class AddButtonActivity extends AppCompatActivity {
         int repsInt = Integer.parseInt(reps.getText().toString());
         float rpeFloat = Float.parseFloat(rpe.getText().toString());
         String dateStr = date.getText().toString();
+        String muscleGroupName = dropdown.getSelectedItem().toString();
 
         // Run database operations on background thread
         new Thread(() -> {
-            // Get database instance
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
 
             // First create and save the exercise
             Exercise exercise = new Exercise();
             exercise.setName(exerciseNameStr);
-            //TODO: add a muscle group
-            /*
-            // You might want to add muscle group here
-            exercise.setMuscleGroup(""); // Add appropriate muscle group if needed
-            */
+            MuscleGroup muscleGroup = Arrays.stream(MuscleGroup.values())
+                    .filter(mg -> mg.getName().equals(muscleGroupName))
+                    .findFirst()
+                    .orElse(null);
+            exercise.setMuscleGroup(muscleGroup);
             db.exerciseDao().insert(exercise);
 
             // Query to get the exercise we just inserted
-            Exercise insertedExercise = db.exerciseDao()
-                    .getExerciseByName(exerciseNameStr);  // You'll need to add this query
+            Exercise insertedExercise = db.exerciseDao().getExerciseByName(exerciseNameStr);
 
             if (insertedExercise != null) {
                 // Create and save the training day
@@ -128,7 +142,7 @@ public class AddButtonActivity extends AppCompatActivity {
         EditText rpe = findViewById(R.id.editTextNumber3);
 
         if (exerciseName.getText().toString().trim().isEmpty()) {
-            exerciseName.setError("Exercise name is required");
+            exerciseName.setError("Please enter an exercise name!");
             return false;
         }
 
@@ -137,7 +151,7 @@ public class AddButtonActivity extends AppCompatActivity {
             Integer.parseInt(reps.getText().toString());
             Float.parseFloat(rpe.getText().toString());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Please enter valid numbers", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter valid numbers!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
